@@ -1,3 +1,4 @@
+# coding=utf-8
 # $Id: f95776c6a6fa8a2b954005004fce99819efdee4f $
 """
 fortunes
@@ -48,42 +49,56 @@ def random_int(start, end):
     @type end: str, unicode
     @return: None
     """
-    try:
-
-        # Use SystemRandom, if it's available, since it's likely to have
-        # more entropy.
-        r = random.SystemRandom()
-    except:
-        r = random
-
-    return r.randint(start, end)
+    return random.randint(start, end)
 
 
 def get_random_fortune(fortune_file):
     """
-    Get a random fortune from the specified file. Barfs if the corresponding
-    ``.dat`` file isn't present.
-    :Parameters:
-        fortune_file : str
-            path to file containing fortune cookies
-    :rtype:  str
-    :return: the random fortune
+    @type fortune_file: str, unicode
+    @return: None
     """
     fortune_index_file = fortune_file + '.dat'
 
     if not os.path.exists(fortune_index_file):
         raise ValueError('Can\'t find file "%s"' % fortune_index_file)
 
-    fortuneIndex = open(fortune_index_file, "rb")
-    data = pickle.load(fortuneIndex)
-    fortuneIndex.close()
-    randomRecord = random_int(0, len(data) - 1)
-    (start, length) = data[randomRecord]
+    fortune_index = open(fortune_index_file, "rb")
+    data = pickle.load(fortune_index)
+    fortune_index.close()
+    random_record = random_int(0, len(data) - 1)
+    (start, length) = data[random_record]
     f = open(fortune_file, 'rt')
     f.seek(start)
-    fortuneCookie = f.read(length)
+    fortune_cookie = f.read(length)
     f.close()
-    return fortuneCookie.strip()
+    spaces = "   "
+    content = fortune_cookie.strip().replace("\t", spaces)
+    cnt = 0
+    nc = spaces
+
+    for c in content:
+        nc += c
+        cnt += 1
+
+        if cnt > 70 and c == " ":
+            nc += "\n" + spaces
+            cnt = 0
+
+    nc = nc.replace("\n" + spaces + "\n" + spaces + "--", "\n" + spaces + "--")
+
+    if len(nc.split("--")) > 1:
+        nc = spaces + nc.split("--")[0].strip() + "\n" + spaces + "-- " + nc.split("--")[1].replace("\n", "").replace(spaces, " ")
+
+    for i in range(2, 6):
+        sp = i * " "
+        nc = nc.replace(sp, " ")
+    ncs = nc.split("--")
+    quote = ncs
+    author = ""
+    if len(ncs) > 1:
+        quote = ncs[0]
+        author = "--"+ncs[1]
+    return quote, author
 
 
 def _read_fortunes(fortune_file):
@@ -112,12 +127,9 @@ def _read_fortunes(fortune_file):
 
 def make_fortune_data_file(fortune_file, quiet=False):
     """
-    Create or update the data file for a fortune cookie file.
-    :Parameters:
-        fortune_file : str
-            path to file containing fortune cookies
-        quiet : bool
-            If ``True``, don't display progress messages
+    @type fortune_file: str, unicode
+    @type quiet: bool
+    @return: None
     """
     fortune_index_file = fortune_file + '.dat'
 
@@ -133,9 +145,9 @@ def make_fortune_data_file(fortune_file, quiet=False):
         shortest = min(shortest, length)
         longest = max(longest, length)
 
-    fortuneIndex = open(fortune_index_file, 'wb')
-    pickle.dump(data, fortuneIndex, _PICKLE_PROTOCOL)
-    fortuneIndex.close()
+    fortune_index = open(fortune_index_file, 'wb')
+    pickle.dump(data, fortune_index, _PICKLE_PROTOCOL)
+    fortune_index.close()
 
     if not quiet:
         print('Processed %d fortunes.\nLongest: %d\nShortest %d' %
@@ -147,7 +159,6 @@ def main():
     Main program.
     """
     from argparse import ArgumentParser
-    usage = 'Usage: %s [OPTIONS] fortune_file' % os.path.basename(sys.argv[0])
     arg_parser = ArgumentParser()
     arg_parser.add_argument('-q', '--quiet', action='store_true', dest='quiet',
                             help="When updating the index file, don't emit "
@@ -157,13 +168,18 @@ def main():
                             help='Update the index file, instead of printing a '
                             'fortune.')
 
+    arg_parser.add_argument('-d', '--fortunefolder', dest='fortunefolder', help='Fortune basedir to use.')
     arg_parser.add_argument('-f', '--fortunefile', dest='fortunefile', help='Fortune file to use.')
     arg_parser.add_argument('-r', '--random', dest='random', help='Use random fortune file to use.', action="store_true")
     args = arg_parser.parse_args(sys.argv[1:])
     lf = []
 
+    if args.fortunefolder is None:
+        print('no fortunefolder given')
+        return
+
     if args.random is True:
-        for fn in os.listdir("quotes/"):
+        for fn in os.listdir(args.fortunefolder):
             if fn.endswith(".dat"):
                 lf.append(fn.replace(".dat", ""))
 
@@ -174,12 +190,13 @@ def main():
 
     if fortune_file is not None:
         fortune_title = fortune_file.capitalize()
-        fortune_file = os.path.join("quotes", fortune_file)
+        fortune_file = os.path.join(args.fortunefolder, fortune_file)
 
         if args.update:
             make_fortune_data_file(fortune_file)
         else:
-            print(fortune_title + ":\n" + get_random_fortune(fortune_file))
+            quote, author = get_random_fortune(fortune_file)
+            print("\033[94m"+fortune_title + ":\n\033[96m" + quote+"\033[95m"+author,"\033[0m")
     else:
         print('no file given')
 

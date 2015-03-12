@@ -1,1 +1,0 @@
-/Users/rabshakeh/.bash_profile
