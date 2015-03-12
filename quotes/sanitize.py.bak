@@ -1,9 +1,0 @@
-from __future__ import print_function
-import os
-for f in os.listdir("."):
-  if f.endswith(".txt"):
-    c = open(f, "rt").read()
-    c = c.replace("%\n%", "%")
-    open(f, "wt").write(c)
-    print(f)
-
