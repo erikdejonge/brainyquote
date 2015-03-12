@@ -14,7 +14,7 @@ def main():
     """
     os.system("rm quotes/*.dat")
     for i in os.listdir("quotes"):
-        if not os.path.isdir("quotes/"+i):
+        if not os.path.isdir("quotes/"+i) and not i.endswith(".py"):
             print(i)
             os.system("python3 printbrainyquote.py -u -f "+i)
 
