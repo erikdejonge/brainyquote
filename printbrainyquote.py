@@ -268,6 +268,7 @@ def main():
     arg_parser.add_argument('-V', '--version', action='store_true',
                           dest='show_version', help='Show version and exit.')
     arg_parser.add_argument('-f', '--fortunefile',dest='fortunefile', help='Fortune file to use.')
+    arg_parser.add_argument('-r', '--random', dest='random', help='Use random fortune file to use.')
 
     #arg_parser.epilogue = 'If <fortune_file> is omitted, fortune looks at the ' \
     #                      'FORTUNE_FILE environment variable for the path.'
