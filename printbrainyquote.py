@@ -93,7 +93,7 @@ def get_random_fortune(fortune_file):
         sp = i * " "
         nc = nc.replace(sp, " ")
     ncs = nc.split("--")
-    quote = ncs
+    quote = nc
     author = ""
     if len(ncs) > 1:
         quote = ncs[0]
