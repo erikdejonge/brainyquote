@@ -79,11 +79,11 @@ def get_random_fortune(fortune_file):
     fortuneIndex.close()
     randomRecord = random_int(0, len(data) - 1)
     (start, length) = data[randomRecord]
-    f = open(fortune_file, 'rU')
+    f = open(fortune_file, 'rt')
     f.seek(start)
     fortuneCookie = f.read(length)
     f.close()
-    return fortuneCookie.replace("%", "").strip()
+    return fortuneCookie.strip()
 
 
 def _read_fortunes(fortune_file):
@@ -94,12 +94,10 @@ def _read_fortunes(fortune_file):
 
     for line in fortune_file:
         if line == "%\n":
-            if pos == 0:  # "%" at top of file. Skip it.
-                continue
-
-            yield (start, pos - start, result)
-            result = []
-            start = None
+            if pos != 0:  # "%" at top of file. Skip it.
+                yield (start, pos - start, result)
+                result = []
+                start = None
         else:
             if start is None:
                 start = pos
@@ -130,7 +128,7 @@ def make_fortune_data_file(fortune_file, quiet=False):
     shortest = sys.maxsize
     longest = 0
 
-    for start, length, fortune in _read_fortunes(open(fortune_file, 'rU')):
+    for start, length, fortune in _read_fortunes(open(fortune_file, 'rt')):
         data += [(start, length)]
         shortest = min(shortest, length)
         longest = max(longest, length)

@@ -12,9 +12,11 @@ def main():
     """
     main
     """
+    os.system("rm quotes/*.dat")
     for i in os.listdir("quotes"):
-        print(i)
-        os.system("python3 printbrainyquote.py -u -f "+i)
+        if not os.path.isdir("quotes/"+i):
+            print(i)
+            os.system("python3 printbrainyquote.py -u -f "+i)
 
 
 if __name__ == "__main__":
