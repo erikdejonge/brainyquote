@@ -104,6 +104,75 @@ def get_random_fortune(fortune_file):
     return quote, author
 
 
+def search_fortune(searchquery):
+    """
+    @type searchquery: str, unicode
+    @return: None
+    """
+    for fortune_file in os.listdir("./quotes"):
+        if fortune_file.endswith(".dat"):
+            fortune_index_file = "./quotes/"+fortune_file
+
+            if not os.path.exists(fortune_index_file):
+                raise ValueError('Can\'t find file "%s"' % fortune_index_file)
+
+            fortune_index = open(fortune_index_file, "rb")
+            data = pickle.load(fortune_index)
+            fortune_index.close()
+            fortune_file = "./quotes/"+fortune_file
+            f = open(fortune_file.replace(".dat", ""), 'rt')
+            qwords = searchquery.split(" ")
+            qwords = [w.lower() for w in qwords]
+            for cnt in range(0, len(data) - 1):
+                (start, length) = data[cnt]
+                f.seek(start)
+                fortune_cookie = f.read(length)
+                spaces = "   "
+                content = fortune_cookie.strip().replace("\t", spaces)
+                cnt = 0
+                nc = spaces
+
+                for c in content:
+                    nc += c
+                    cnt += 1
+
+                    if cnt > 80 and c == " ":
+                        nc += "\n" + spaces
+                        cnt = 0
+
+                nc = nc.replace("\n" + spaces + "\n" + spaces + "--", "\n" + spaces + "--")
+
+                if len(nc.split("--")) > 1:
+                    nc = spaces + nc.split("--")[0].strip() + "\n" + spaces + "-- " + nc.split("--")[1].replace("\n", "").replace(spaces, " ")
+
+                for i in range(2, 6):
+                    sp = i * " "
+                    nc = nc.replace(sp, " ")
+
+                ncs = nc.split("--")
+                quote = nc
+                author = ""
+
+                if len(ncs) > 1:
+                    quote = ncs[0]
+                    author = "--" + ncs[1]
+
+                retquote = None
+
+                for word in qwords:
+                    if word in quote.lower():
+                        retquote = quote
+                        break
+
+                if retquote is not None:
+                    
+                    return retquote, author
+
+            f.close()
+
+    return None, None
+
+
 def _read_fortunes(fortune_file):
     """ Yield fortunes as lists of lines """
     result = []
@@ -175,6 +244,7 @@ def main():
     arg_parser.add_argument('-f', '--fortunefile', dest='fortunefile', help='Fortune file to use.')
     arg_parser.add_argument('-r', '--random', dest='random', help='Use random fortune file to use.', action="store_true")
     arg_parser.add_argument('-l', '--length', dest='length', help='Max length.', action="store")
+    arg_parser.add_argument('-s', '--search', dest='search', help='Search a quote.', action="store")
     args = arg_parser.parse_args(sys.argv[1:])
     lf = []
     length = None
@@ -198,15 +268,18 @@ def main():
     else:
         fortune_file = args.fortunefile
 
-    if fortune_file is not None:
-        fortune_title = fortune_file.capitalize()
-        fortune_file = os.path.join(args.fortunefolder, fortune_file)
+    if fortune_file is not None or args.search:
+        if fortune_file:
+            fortune_title = fortune_file.capitalize()
+            fortune_file = os.path.join(args.fortunefolder, fortune_file)
+        quote = None
+        author = ""
 
-        if args.update:
+        if args.search is not None:
+            quote, author = search_fortune(args.search)
+        elif args.update:
             make_fortune_data_file(fortune_file)
         else:
-            quote = None
-            author = ""
             if length is None:
                 quote, author = get_random_fortune(fortune_file)
             else:
@@ -215,8 +288,9 @@ def main():
                 while (quotelen > length) or (quotelen < 0):
                     quote, author = get_random_fortune(fortune_file)
                     quotelen = len(quote)
-            if quote is not None:
-                print("\033[96m" + fortune_title + ":\033[0m\n\033[94m" + quote + "\033[93m" + author, "\033[0m")
+
+        if quote is not None:
+            print("\033[96m" + fortune_title + ":\033[0m\n\033[94m" + quote + "\033[94m" + author, "\033[0m")
     else:
         print('no file given')
 
