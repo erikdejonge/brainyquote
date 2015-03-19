@@ -129,7 +129,7 @@ def search_fortune(searchquery, fortunefilep=None):
             fortune_file = "./quotes/" + fortune_file
             f = open(fortune_file.replace(".dat", ""), 'rt')
             qwords = searchquery.split(" ")
-            qwords = [w.lower() for w in qwords]
+            qwords = [w.lower() for w in qwords if w]
             for cnt in range(0, len(data) - 1):
                 (start, length) = data[cnt]
                 f.seek(start)
@@ -165,19 +165,26 @@ def search_fortune(searchquery, fortunefilep=None):
                     author = "--" + ncs[1]
 
                 score = 0
+                quotesplit = [x for x in quote.lower().split(" ") if x]
 
                 for word in qwords:
-                    if word in quote.lower().split(" "):
+                    if word in quotesplit:
                         score += 1
 
-                if searchquery.lower() in author.lower():
-                    score += 150
+                for word in qwords:
+                    if word in author.lower():
 
-                if score > 0:
-                    if score not in results:
-                        results[score] = []
+                        if score not in results:
+                            results[score] = []
+                        results[score].append((100, fortune_file.replace(".dat", ""), quote, author))
 
-                    results[score].append((score, fortune_file.replace(".dat", ""), quote, author))
+                    elif score > 0:
+                        if score == len(quotesplit):
+
+                            if score not in results:
+                                results[score] = []
+
+                            results[score].append((score, fortune_file.replace(".dat", ""), quote, author))
 
             f.close()
 
@@ -292,16 +299,19 @@ def main():
         author = ""
 
         if args.search is not None:
+            if length is None:
+                length = -1
+
             results = search_fortune(args.search, fortune_file)
 
             for index in results:
-                if index == len(args.search.split(" ")):
-                    print(str(index) + ".")
-                for core, fortune_file, quote, author in results[index]:
-                    if index >= len(args.search.split(" ")):
+
+
+                for score, fortune_file, quote, author in results[index]:
+                    if score > len(args.search.split(" ")) / 3:
                         quotelen = len(quote)
-                        if quotelen < length:
-                            print("\033[96m" + ". " + fortune_file.replace("./quotes/", "").capitalize() + ":\033[0m\n\033[94m" + quote + "\033[94m" + author, "\033[0m\n")
+                        if quotelen < length or length == -1:
+                            print("\033[96m" + fortune_file.replace("./quotes/", "").capitalize() + " ("+str(score) + "):\033[0m\n\033[94m" + quote + "\033[94m" + author, "\033[0m\n")
 
         elif args.update:
             make_fortune_data_file(fortune_file)
