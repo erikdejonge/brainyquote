@@ -80,7 +80,7 @@ def get_random_fortune(fortune_file):
         nc += c
         cnt += 1
 
-        if cnt > 70 and c == " ":
+        if cnt > 80 and c == " ":
             nc += "\n" + spaces
             cnt = 0
 
@@ -92,12 +92,15 @@ def get_random_fortune(fortune_file):
     for i in range(2, 6):
         sp = i * " "
         nc = nc.replace(sp, " ")
+
     ncs = nc.split("--")
     quote = nc
     author = ""
+
     if len(ncs) > 1:
         quote = ncs[0]
-        author = "--"+ncs[1]
+        author = "--" + ncs[1]
+
     return quote, author
 
 
@@ -171,8 +174,15 @@ def main():
     arg_parser.add_argument('-d', '--fortunefolder', dest='fortunefolder', help='Fortune basedir to use.')
     arg_parser.add_argument('-f', '--fortunefile', dest='fortunefile', help='Fortune file to use.')
     arg_parser.add_argument('-r', '--random', dest='random', help='Use random fortune file to use.', action="store_true")
+    arg_parser.add_argument('-l', '--length', dest='length', help='Max length.', action="store")
     args = arg_parser.parse_args(sys.argv[1:])
     lf = []
+    length = None
+    try:
+        if args.length is not None:
+            length = int(args.length)
+    except ValueError:
+        pass
 
     if args.fortunefolder is None:
         print('no fortunefolder given')
@@ -195,8 +205,18 @@ def main():
         if args.update:
             make_fortune_data_file(fortune_file)
         else:
-            quote, author = get_random_fortune(fortune_file)
-            print("\033[94m"+fortune_title + ":\n\033[96m" + quote+"\033[95m"+author,"\033[0m")
+            quote = None
+            author = ""
+            if length is None:
+                quote, author = get_random_fortune(fortune_file)
+            else:
+                quotelen = -1
+
+                while (quotelen > length) or (quotelen < 0):
+                    quote, author = get_random_fortune(fortune_file)
+                    quotelen = len(quote)
+            if quote is not None:
+                print("\033[96m" + fortune_title + ":\033[0m\n\033[94m" + quote + "\033[93m" + author, "\033[0m")
     else:
         print('no file given')
 
