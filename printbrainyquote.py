@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3
+
 # coding=utf-8
 # $Id: f95776c6a6fa8a2b954005004fce99819efdee4f $
 """
