@@ -70,7 +70,7 @@ def get_random_fortune(fortune_file):
     fortune_index.close()
     random_record = random_int(0, len(data) - 1)
     (start, length) = data[random_record]
-    f = open(fortune_file, 'rt')
+    f = open(fortune_file, 'r')
     f.seek(start)
     fortune_cookie = f.read(length)
     f.close()
