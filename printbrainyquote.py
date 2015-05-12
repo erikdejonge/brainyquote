@@ -1,11 +1,11 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 # coding=utf-8
 """
 fortunes
 """
+
 from __future__ import division, print_function, absolute_import, unicode_literals
 from future import standard_library
-
 import os
 import sys
 import pickle
@@ -13,15 +13,14 @@ import random
 
 from argparse import ArgumentParser
 from clint.textui.progress import mill
-
 __all__ = ['main', 'get_random_fortune', 'make_fortune_data_file']
 __url__ = 'http://software.clapper.org/fortune/'
 __copyright__ = '2008-2011 Brian M. Clapper'
 __author__ = 'Brian M. Clapper'
 __email__ = 'bmc@clapper.org'
-__version__ = '1.0'
-
 _PICKLE_PROTOCOL = 2
+
+__version__ = '1.0'
 
 
 def _read_fortunes(fortune_file):
@@ -112,88 +111,6 @@ def get_random_fortune(fortune_file):
     return quote, author
 
 
-def main():
-    """
-    Main program.
-    """
-    arg_parser = ArgumentParser()
-    arg_parser.add_argument('-q', '--quiet', action='store_true', dest='quiet',
-                            help="When updating the index file, don't emit "
-                            "messages.")
-
-    arg_parser.add_argument('-u', '--update', action='store_true', dest='update',
-                            help='Update the index file, instead of printing a '
-                            'fortune.')
-
-    arg_parser.add_argument('-d', '--fortunefolder', dest='fortunefolder', help='Fortune basedir to use.')
-    arg_parser.add_argument('-f', '--fortunefile', dest='fortunefile', help='Fortune file to use.')
-    arg_parser.add_argument('-r', '--random', dest='random', help='Use random fortune file to use.', action="store_true")
-    arg_parser.add_argument('-l', '--length', dest='length', help='Max length.', action="store")
-    arg_parser.add_argument('-s', '--search', dest='search', help='Search a quote.', action="store")
-    args = arg_parser.parse_args(sys.argv[1:])
-    lf = []
-    length = None
-
-    try:
-        if args.length is not None:
-            length = int(args.length)
-    except ValueError:
-        pass
-
-    if args.fortunefolder is None:
-        print('no fortunefolder given')
-        return
-
-    if args.random is True:
-        for fn in os.listdir(args.fortunefolder):
-            if fn.endswith(".dat"):
-                lf.append(fn.replace(".dat", ""))
-
-    if len(lf) > 0:
-        fortune_file = lf[random.randint(0, len(lf) - 1)]
-    else:
-        fortune_file = args.fortunefile
-
-    fortune_title = ""
-    if fortune_file is not None or args.search:
-        if fortune_file:
-            fortune_title = fortune_file.capitalize()
-            fortune_file = os.path.join(args.fortunefolder, fortune_file)
-
-        quote = None
-        author = ""
-
-        if args.search is not None:
-            if length is None:
-                length = -1
-
-            results = search_fortune(args.search, fortune_file)
-
-            for index in results:
-                for score, fortune_file, quote, author in results[index]:
-                    if score > len(args.search.split(" ")) / 3:
-                        quotelen = len(quote)
-                        if quotelen < length or length == -1:
-                            print("\033[96m" + fortune_file.replace("./quotes/", "").capitalize() + " (" + str(score) + "):\033[0m\n\033[94m" + quote + "\033[94m" + author, "\033[0m\n")
-
-        elif args.update:
-            make_fortune_data_file(fortune_file)
-        else:
-            if length is None:
-                quote, author = get_random_fortune(fortune_file)
-            else:
-                quotelen = -1
-
-                while (quotelen > length) or (quotelen < 0):
-                    quote, author = get_random_fortune(fortune_file)
-                    quotelen = len(quote)
-
-            if quote is not None:
-                print("\033[96m" + fortune_title + ":\033[0m\n\033[94m" + quote + "\033[94m" + author, "\033[0m")
-    else:
-        print('no file given')
-
-
 def make_fortune_data_file(fortune_file, quiet=False):
     """
     @type fortune_file: str, unicode
@@ -240,12 +157,12 @@ def search_fortune(searchquery, fortunefilep=None):
     """
     results = {}
 
-    for fortune_file in mill(os.listdir("./quotes"), label="- Searching quote files", every=4):
+    for fortune_file in mill(os.listdir("."), label="- Searching quote files", every=4):
         if fortunefilep is not None:
             fortune_file = os.path.basename(fortunefilep) + ".dat"
 
         if fortune_file.endswith(".dat"):
-            fortune_index_file = "./quotes/" + fortune_file
+            fortune_index_file = "./" + fortune_file
 
             if not os.path.exists(fortune_index_file):
                 raise ValueError('Can\'t find file "%s"' % fortune_index_file)
@@ -253,7 +170,7 @@ def search_fortune(searchquery, fortunefilep=None):
             fortune_index = open(fortune_index_file, "rb")
             data = pickle.load(fortune_index)
             fortune_index.close()
-            fortune_file = "./quotes/" + fortune_file
+            fortune_file = "./" + fortune_file
             f = open(fortune_file.replace(".dat", ""), 'rt')
             qwords = searchquery.split(" ")
             qwords = [w.lower() for w in qwords if w]
@@ -317,8 +234,96 @@ def search_fortune(searchquery, fortunefilep=None):
 
     return results
 
-standard_library.install_aliases()
 
+def main():
+    """
+    Main program.
+    """
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument('-q', '--quiet', action='store_true', dest='quiet',
+                            help="When updating the index file, don't emit "
+                                 "messages.")
+
+    arg_parser.add_argument('-u', '--update', action='store_true', dest='update',
+                            help='Update the index file, instead of printing a '
+                                 'fortune.')
+
+    arg_parser.add_argument('-d', '--fortunefolder', dest='fortunefolder', help='Fortune basedir to use.')
+    arg_parser.add_argument('-f', '--fortunefile', dest='fortunefile', help='Fortune file to use.')
+    arg_parser.add_argument('-r', '--random', dest='random', help='Use random fortune file to use.', action="store_true")
+    arg_parser.add_argument('-l', '--length', dest='length', help='Max length.', action="store")
+    arg_parser.add_argument('-s', '--search', dest='search', help='Search a quote.', action="store")
+    args = arg_parser.parse_args(sys.argv[1:])
+    lf = []
+    length = None
+
+    try:
+        if args.length is not None:
+            length = int(args.length)
+    except ValueError:
+        pass
+
+    if args.fortunefolder is None:
+        print('no fortunefolder given')
+        return
+
+    os.chdir(os.path.expanduser(args.fortunefolder))
+
+    if args.random is True:
+        for fn in os.listdir(os.path.expanduser(args.fortunefolder)):
+            if fn.endswith(".dat"):
+                lf.append(fn.replace(".dat", ""))
+
+    if len(lf) > 0:
+        # lf = ['age', 'alone', 'amazing', 'anger', 'anniversary', 'architecture', 'art', 'attitude', 'beauty', 'best', 'birthday', 'brainy', 'business', 'car', 'change', 'christmas', 'communication', 'computers', 'cool', 'courage', 'dad', 'dating', 'death', 'design', 'diet', 'dreams', 'easter', 'education', 'environmental', 'equality', 'experience', 'failure', 'faith', 'family', 'famous', 'fathersday', 'fear', 'finance', 'fitness', 'food', 'forgiveness', 'freedom', 'friendship', 'funny',
+        # 'future', 'gardening', 'god', 'good', 'government', 'graduation', 'great', 'happiness', 'health', 'history', 'home', 'hope', 'humor', 'imagination', 'inspirational', 'intelligence', 'jealousy', 'knowledge', 'law', 'leadership', 'learning', 'legal', 'life', 'love', 'marriage', 'medical', 'memorialday', 'men', 'mom', 'money', 'morning', 'mothersday', 'motivational', 'movies', 'movingon', 'music', 'nature', 'newyears', 'parenting', 'patience', 'patriotism', 'peace', 'pet', 'poetry',
+        # 'politics', 'positive', 'power', 'relationship', 'religion', 'respect', 'romantic', 'sad', 'saintpatricksday', 'science', 'smile', 'society', 'sports', 'strength', 'success', 'sympathy', 'teacher', 'technology', 'teen', 'thankful', 'thanksgiving', 'time', 'travel', 'trust', 'truth', 'valentinesday', 'veteransday', 'war', 'wedding', 'wisdom', 'women', 'work']
+        lf = ["women", "friendship", "respect", "business", "succes", "technology", "history", "humor"]
+        fortune_file = lf[random.randint(0, len(lf) - 1)]
+    else:
+        fortune_file = args.fortunefile
+
+    fortune_title = ""
+    if fortune_file is not None or args.search:
+        if fortune_file:
+            fortune_title = fortune_file.capitalize()
+            fortune_file = os.path.join(args.fortunefolder, fortune_file)
+
+        quote = None
+        author = ""
+
+        if args.search is not None:
+            if length is None:
+                length = -1
+
+            results = search_fortune(args.search, fortune_file)
+
+            for index in results:
+                for score, fortune_file, quote, author in results[index]:
+                    if score > len(args.search.split(" ")) / 3:
+                        quotelen = len(quote)
+                        if quotelen < length or length == -1:
+                            print("\033[96m" + fortune_file.replace("./quotes/", "").capitalize() + " (" + str(score) + "):\033[0m\n\033[94m" + quote + "\033[94m" + author, "\033[0m\n")
+
+        elif args.update:
+            make_fortune_data_file(fortune_file)
+        else:
+            if length is None:
+                quote, author = get_random_fortune(fortune_file)
+            else:
+                quotelen = -1
+
+                while (quotelen > length) or (quotelen < 0):
+                    quote, author = get_random_fortune(fortune_file)
+                    quotelen = len(quote)
+
+            if quote is not None:
+                print("\033[96m" + fortune_title + ":\033[0m\n\033[94m" + quote + "\033[94m" + author, "\033[0m")
+    else:
+        print('no file given')
+
+
+standard_library.install_aliases()
 
 if __name__ == '__main__':
     main()
