@@ -323,7 +323,7 @@ def main():
             else:
                 if args.clean:
                     for _ in range(0, 10):
-                        quote = quote.replace("\n", "")
+                        #quote = quote.replace("\n", "")
                         quote = quote.replace("  ", " ")
                     quote = quote.replace("'", "")
                     print(author.replace("--", "").strip().replace("'", "\'") + ": " + quote.strip())
