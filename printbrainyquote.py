@@ -253,7 +253,9 @@ def main():
     arg_parser.add_argument('-r', '--random', dest='random', help='Use random fortune file to use.', action="store_true")
     arg_parser.add_argument('-l', '--length', dest='length', help='Max length.', action="store")
     arg_parser.add_argument('-s', '--search', dest='search', help='Search a quote.', action="store")
+    arg_parser.add_argument('-c', '--clean', dest='clean', help='No color', action="store_true")
     args = arg_parser.parse_args(sys.argv[1:])
+
     lf = []
     length = None
 
@@ -316,9 +318,16 @@ def main():
                 while (quotelen > length) or (quotelen < 0):
                     quote, author = get_random_fortune(fortune_file)
                     quotelen = len(quote)
-
-            if quote is not None:
-                print("\033[96m" + fortune_title + ":\033[0m\n\033[34m" + quote + "\033[34m" + author, "\033[0m")
+            if quote is None:
+                print("Error: no quote found.!")
+            else:
+                if args.clean:
+                    for _ in range(0, 10):
+                        quote = quote.replace("\n", "")
+                        quote = quote.replace("  ", " ")
+                    print(author.replace("--", "").strip() + ": " + quote.strip())
+                else:
+                    print("\033[96m" + fortune_title + ":\033[0m\n\033[34m" + quote + "\033[34m" + author, "\033[0m")
     else:
         print('no file given')
 
