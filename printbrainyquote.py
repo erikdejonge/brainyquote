@@ -323,10 +323,10 @@ def main():
             else:
                 if args.clean:
                     for _ in range(0, 10):
-                        quote = quote.replace("\n", "")
+                        quote = quote.replace("\n", "'")
                         quote = quote.replace("  ", " ")
                     quote = quote.replace("'", "\'")
-                    print(author.replace("--", "").strip() + ": " + quote.strip())
+                    print(author.replace("--", "").strip().replace("'", "\'") + ": " + quote.strip())
                 else:
                     print("\033[96m" + fortune_title + ":\033[0m\n\033[34m" + quote + "\033[34m" + author, "\033[0m")
     else:
