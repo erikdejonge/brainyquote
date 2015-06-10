@@ -10,7 +10,7 @@ import os
 import sys
 import pickle
 import random
-
+import portalocker
 from argparse import ArgumentParser
 from clint.textui.progress import mill
 __all__ = ['main', 'get_random_fortune', 'make_fortune_data_file']
@@ -52,63 +52,64 @@ def get_random_fortune(fortune_file):
     @type fortune_file: str, unicode
     @return: None
     """
-    fortune_index_file = fortune_file + '.dat'
+    with portalocker.Lock('somefile', timeout=15, fail_when_locked=False) as fh:
+        fortune_index_file = fortune_file + '.dat'
 
-    if not os.path.exists(fortune_index_file):
-        raise ValueError('Can\'t find file "%s"' % fortune_index_file)
+        if not os.path.exists(fortune_index_file):
+            raise ValueError('Can\'t find file "%s"' % fortune_index_file)
 
-    fortune_index = open(fortune_index_file, "rb")
-    data = pickle.load(fortune_index)
-    fortune_index.close()
-    fortune_cookie = None
+        fortune_index = open(fortune_index_file, "rb")
+        data = pickle.load(fortune_index)
+        fortune_index.close()
+        fortune_cookie = None
 
-    for i in range(0, 5):
-        try:
-            random_record = random_int(0, len(data) - 1)
-            (start, length) = data[random_record]
-            f = open(fortune_file, 'rt')
-            f.seek(start)
-            fortune_cookie = f.read(length)
-            f.close()
-            break
-        except UnicodeDecodeError as ude:
-            if i > 3:
-                print(i, ude)
+        for i in range(0, 5):
+            try:
+                random_record = random_int(0, len(data) - 1)
+                (start, length) = data[random_record]
+                f = open(fortune_file, 'rt')
+                f.seek(start)
+                fortune_cookie = f.read(length)
+                f.close()
+                break
+            except UnicodeDecodeError as ude:
+                if i > 3:
+                    print(i, ude)
 
-    if fortune_cookie is None:
-        return
+        if fortune_cookie is None:
+            return
 
-    spaces = "   "
-    content = fortune_cookie.strip().replace("\t", spaces)
-    cnt = 0
-    nc = spaces
+        spaces = "   "
+        content = fortune_cookie.strip().replace("\t", spaces)
+        cnt = 0
+        nc = spaces
 
-    for c in content:
-        nc += c
-        cnt += 1
+        for c in content:
+            nc += c
+            cnt += 1
 
-        if cnt > 80 and c == " ":
-            nc += "\n" + spaces
-            cnt = 0
+            if cnt > 80 and c == " ":
+                nc += "\n" + spaces
+                cnt = 0
 
-    nc = nc.replace("\n" + spaces + "\n" + spaces + "--", "\n" + spaces + "--")
+        nc = nc.replace("\n" + spaces + "\n" + spaces + "--", "\n" + spaces + "--")
 
-    if len(nc.split("--")) > 1:
-        nc = spaces + nc.split("--")[0].strip() + "\n" + spaces + "-- " + nc.split("--")[1].replace("\n", "").replace(spaces, " ")
+        if len(nc.split("--")) > 1:
+            nc = spaces + nc.split("--")[0].strip() + "\n" + spaces + "-- " + nc.split("--")[1].replace("\n", "").replace(spaces, " ")
 
-    for i in range(2, 6):
-        sp = i * " "
-        nc = nc.replace(sp, " ")
+        for i in range(2, 6):
+            sp = i * " "
+            nc = nc.replace(sp, " ")
 
-    ncs = nc.split("--")
-    quote = nc
-    author = ""
+        ncs = nc.split("--")
+        quote = nc
+        author = ""
 
-    if len(ncs) > 1:
-        quote = ncs[0]
-        author = "--" + ncs[1]
+        if len(ncs) > 1:
+            quote = ncs[0]
+            author = "--" + ncs[1]
 
-    return quote, author
+        return quote, author
 
 
 def make_fortune_data_file(fortune_file, quiet=False):
