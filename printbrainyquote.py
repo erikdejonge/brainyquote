@@ -52,7 +52,7 @@ def get_random_fortune(fortune_file):
     @type fortune_file: str, unicode
     @return: None
     """
-    with portalocker.Lock('somefile', timeout=15, fail_when_locked=False) as fh:
+    with portalocker.Lock(os.path.expanduser('~/.somefile'), timeout=15, fail_when_locked=False) as fh:
         fortune_index_file = fortune_file + '.dat'
 
         if not os.path.exists(fortune_index_file):
