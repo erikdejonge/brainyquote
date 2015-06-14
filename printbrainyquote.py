@@ -11,6 +11,7 @@ import sys
 import pickle
 import random
 import portalocker
+import time
 from argparse import ArgumentParser
 from clint.textui.progress import mill
 __all__ = ['main', 'get_random_fortune', 'make_fortune_data_file']
@@ -52,6 +53,7 @@ def get_random_fortune(fortune_file):
     @type fortune_file: str, unicode
     @return: None
     """
+    time.sleep(random.random())
     with portalocker.Lock(os.path.expanduser('~/.somefile'), timeout=15, fail_when_locked=False) as fh:
         fortune_index_file = fortune_file + '.dat'
 
