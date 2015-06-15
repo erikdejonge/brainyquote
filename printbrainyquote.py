@@ -321,9 +321,17 @@ def main():
             else:
                 quotelen = -1
 
-                while (quotelen > length) or (quotelen < 0):                    
+                trycnt = 0
+                while (quotelen > length) or (quotelen < 0):
+                    prevq = quote
                     quote, author = get_random_fortune(fortune_file)
                     quotelen = len(quote)
+
+                    if prevq and (quotelen > len(prevq)):
+                        quote = prevq
+                    trycnt += 1
+                    if trycnt > 10:
+                        break
             if quote is None:
                 print("Error: no quote found.!")
             else:
