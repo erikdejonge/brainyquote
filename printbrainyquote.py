@@ -53,7 +53,7 @@ def get_random_fortune(fortune_file):
     @type fortune_file: str, unicode
     @return: None
     """
-    time.sleep(random.random())
+
     with portalocker.Lock(os.path.expanduser('~/.random_fortune_lock_file'), timeout=15, fail_when_locked=False) as fh:
         fortune_index_file = fortune_file + '.dat'
 
@@ -288,6 +288,9 @@ def main():
     else:
         fortune_file = args.fortunefile
 
+    random.seed()
+    time.sleep(random.random())
+
     fortune_title = ""
     if fortune_file is not None or args.search:
         if fortune_file:
@@ -318,7 +321,7 @@ def main():
             else:
                 quotelen = -1
 
-                while (quotelen > length) or (quotelen < 0):
+                while (quotelen > length) or (quotelen < 0):                    
                     quote, author = get_random_fortune(fortune_file)
                     quotelen = len(quote)
             if quote is None:
