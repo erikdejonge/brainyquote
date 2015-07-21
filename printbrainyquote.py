@@ -242,6 +242,7 @@ def main():
     """
     Main program.
     """
+
     arg_parser = ArgumentParser()
     arg_parser.add_argument('-q', '--quiet', action='store_true', dest='quiet',
                             help="When updating the index file, don't emit "
@@ -283,7 +284,10 @@ def main():
         # lf = ['age', 'alone', 'amazing', 'anger', 'anniversary', 'architecture', 'art', 'attitude', 'beauty', 'best', 'birthday', 'brainy', 'business', 'car', 'change', 'christmas', 'communication', 'computers', 'cool', 'courage', 'dad', 'dating', 'death', 'design', 'diet', 'dreams', 'easter', 'education', 'environmental', 'equality', 'experience', 'failure', 'faith', 'family', 'famous', 'fathersday', 'fear', 'finance', 'fitness', 'food', 'forgiveness', 'freedom', 'friendship', 'funny',
         # 'future', 'gardening', 'god', 'good', 'government', 'graduation', 'great', 'happiness', 'health', 'history', 'home', 'hope', 'humor', 'imagination', 'inspirational', 'intelligence', 'jealousy', 'knowledge', 'law', 'leadership', 'learning', 'legal', 'life', 'love', 'marriage', 'medical', 'memorialday', 'men', 'mom', 'money', 'morning', 'mothersday', 'motivational', 'movies', 'movingon', 'music', 'nature', 'newyears', 'parenting', 'patience', 'patriotism', 'peace', 'pet', 'poetry',
         # 'politics', 'positive', 'power', 'relationship', 'religion', 'respect', 'romantic', 'sad', 'saintpatricksday', 'science', 'smile', 'society', 'sports', 'strength', 'success', 'sympathy', 'teacher', 'technology', 'teen', 'thankful', 'thanksgiving', 'time', 'travel', 'trust', 'truth', 'valentinesday', 'veteransday', 'war', 'wedding', 'wisdom', 'women', 'work']
-        lf = ["future", "god", "money", "freedom", "health", "women", "friendship", "respect", "business", "success", "technology", "history", "humor"]
+        #lf = ["future", "god", "money", "freedom", "health", "women", "friendship", "respect", "business", "success", "technology", "history", "humor"]
+        lf = list(set([x.replace(".dat", "") for x in os.listdir(args.fortunefolder) if x.endswith(".dat")]))
+
+
         fortune_file = lf[random.randint(0, len(lf) - 1)]
     else:
         fortune_file = args.fortunefile
