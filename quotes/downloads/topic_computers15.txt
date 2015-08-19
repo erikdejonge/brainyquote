@@ -1,0 +1,76 @@
+%
+As computers have become more powerful, computer graphics have advanced to the point where it's possible to create photo-realistic images. The bottleneck wasn't, 'How do we make pixels prettier?' It was, 'How do we engage with them more?'
+		--Jefferson Han
+%
+How did the economy produce all these amazing things that we have around us - computers and cell phones and so on? There were a bunch of ideas, and the good ones grew and prospered. And the bad ones were pretty ruthlessly weeded out.
+		--Tim Harford
+%
+Interactive computers and software will, I think, provide a less costly method of doing some kinds of inquiry, in knowledge acquisition and even reasoning and interaction.
+		--Roy Romer
+%
+As a kid, I was always into art at the same time as computers, and eventually I realised I was making more interesting stuff with my keyboard than with my hands. I really enjoyed modifying computer games more than playing them, so that got me into programming.
+		--Aaron Koblin
+%
+I continue to meet people who have had their Web pages hijacked, their browsers corrupted, in some cases, their children exposed to inappropriate material from these dangerous programs hidden in their family computers.
+		--Cliff Stearns
+%
+Starting early and getting girls on computers, tinkering and playing with technology, games and new tools, is extremely important for bridging the gender divide that exists now in computer science and in technology.
+		--Beth Simone Noveck
+%
+While the recent addition of the National Guard providing a support role manning computers and cameras has allowed more Border Patrol agents to work the field, more agents are still needed.
+		--Timothy Murphy
+%
+If the machines can take the drudgery out of it and just leave us with the joy of drawing, then that's the best of both worlds - and I'll use those computers!
+		--Don Bluth
+%
+The computer is not, in our opinion, a good model of the mind, but it is as the trumpet is to the orchestra - you really need it. And so, we have very massive simulations in computers because the problem is, of course, very complex.
+		--Gerald Edelman
+%
+Computers get better faster than anything else ever.
+		--Erik Brynjolfsson
+%
+I thought of computers as very low class. I thought of myself as a pure mathematician and was interested in partial differential equations and topology and things like that.
+		--Whitfield Diffie
+%
+We didn't know the importance of home computers before the Internet. We had them mostly for fun, then the Internet came along and was enabled by all the PCs out there.
+		--Burt Rutan
+%
+So technologies, whether it is a telephone or an iPhone, computers in general or automobiles, television even, all individualize us. We all sit in front of our iPhones and communicating but are we really communicating?
+		--Henry Mintzberg
+%
+Well, the big products in electronics in the '50s were radio and television. The first big computers were just beginning to come in and represented the most logical market for us to work in.
+		--Jack Kilby
+%
+Kids are finding out about the potential for discovery online from other sources; many of them have computers at home, for instance, or their friends have them.
+		--Daniel Greenberg
+%
+The Web is actually a coming together of three technologies, if you like: the hypertext, the personal computer, and the network. So, the network we had, and the personal computers were there, but people didn't use them, because they didn't know what to use them for, except maybe for a few games.
+		--Robert Cailliau
+%
+That's the new way - with computers, computers, computers. That's the way we can have the cell survive and get some new information in high resolution. We started about five years ago and, today, I think we have reached the target.
+		--Lennart Nilsson
+%
+Future generations will know there's nothing mystical about wetware because by 2100, Moore's law will have given us tiny quantum computers powerful enough to upload a human soul.
+		--Frank Tipler
+%
+Over and over again, financial experts and wonkish talking heads endeavor to explain these mysterious, 'toxic' financial instruments to us lay folk. Over and over, they ignobly fail, because we all know that no one understands credit default obligations and derivatives, except perhaps Mr. Buffett and the computers who created them.
+		--Richard Dooling
+%
+I like computers as a tool. I like them as an instrument. I think they're just pretty.
+		--Dallas Roberts
+%
+It is an interesting fact that during my tour I was never allowed access to computers, radios, or anything else that I might damage through curiosity, or perhaps something more sinister.
+		--Robert B. Laughlin
+%
+People are on their computers more than watching TV, because you can only watch voyeur TV, which is basically what reality shows are, for so long.
+		--Stephen Root
+%
+Equipped with cell phones, beepers, and handheld computers, the 'conspicuously industrious' blur the line between home and office by working anytime, anywhere.
+		--Jo Ann Davis
+%
+What's happened with society is that we have created these devices, computers, which already can register and process huge amounts of information, which is a significant fraction of the amount of information that human beings themselves, as a species, can process.
+		--Seth Lloyd
+%
+There's no other major item most of us own that is as confusing, unpredictable and unreliable as our personal computers.
+		--Walt Mossberg
+%

@@ -1,56 +1,20 @@
-.idea
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.cache
-nosetests.xml
-coverage.xml
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
+speedtest/build
+vagrant_vmware/vagrant_1.7.2.dmg
+nohup.out
+server/.idea/workspace.xml
+app/img/cblogo
+server/.idea/workspace.xml
+server/.idea/
+.idea/
+!./pipscripts/.idea/
+/Users/rabshakeh/workspace/cryptobox/www_cryptobox_nl/app/img/cblogo/
+cblogo/
+*.idea
+.DS_Store
+*.pyo
+*.pyc
+*.dump
+md2html/markdown/*
+md2html/converted/*
+md2html/books/
+md2html/github/*
