@@ -16,7 +16,7 @@ def main():
     for i in os.listdir("quotes"):
         if not os.path.isdir("quotes/"+i) and not i.endswith(".py"):
             print(i)
-            os.system("python3 ~/workspace/brainyquote/printbrainyquote.py -d ~/quotes -u -f "+i)
+            os.system("python3 ~/workspace/brainyquote/printbrainyquote.py -d ~/workspace/brainyquote/quotes -u -f "+i)
 
 
 if __name__ == "__main__":
