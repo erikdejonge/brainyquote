@@ -19,6 +19,7 @@ where   : Latitude: 51.825439
 import os
 import sys
 import requests
+import consoleprinter
 from arguments import Arguments
 from consoleprinter import console
 from bs4 import BeautifulSoup
@@ -63,17 +64,28 @@ def main():
     scripts = allhtml.find_all("script")[0]
     rtext = str(allhtml).split("</span>")[0]
     soup = BeautifulSoup(rtext, 'html.parser')
-    colors = ["33", "91", "94"]
+    colors = ["34", "91", "94"]
     indexc = 0
-    for i in str(soup.getText().strip().replace('    ―', '')+"\n").split("\n"):
-        print("\033["+colors[indexc]+"m{}\033[0m".format(i))
+    for i in str(soup.getText().strip().replace('    ―', '')).strip().split("\n"):
+
+        if indexc == 0:
+
+            content = i.replace(".", ".\n")
+            content = content.strip()
+
+            for c in content.split("\n"):
+                print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(c)+"\033[0m")
+
+        else:
+            print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(i.strip())+"\033["+colors[indexc]+"m")
+
         indexc += 1
         if indexc > 2:
             indexc = 0
 
 
     for i in soup.find_all("a"):
-        print("\033[37m{}\033[0m".format(baseurl+i.get('href')))
+        print("\033[37m"+baseurl+i.get('href'),"\033[0m")
 
 
 
