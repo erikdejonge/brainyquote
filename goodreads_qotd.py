@@ -59,35 +59,37 @@ def main():
         r = requests.get(url)
         #open("r.txt", "w").write(r.text)
         rtext = r.text
+
     soup = BeautifulSoup(rtext, 'html.parser')
     allhtml = soup.find_all(class_="quoteText")[0]
-    scripts = allhtml.find_all("script")[0]
+    #scripts = allhtml.find_all("script")[0]
     rtext = str(allhtml).split("</span>")[0]
     soup = BeautifulSoup(rtext, 'html.parser')
-    colors = ["34", "91", "94"]
+    colors = ["33", "91", "94"]
     indexc = 0
     for i in str(soup.getText().strip().replace('    ―', '')).strip().split("\n"):
+        if len(i.strip())>0:
+            if indexc == 0:
 
-        if indexc == 0:
+                content = i.replace("\n\n", "\n").replace(".", ".\n")
+                content = content.strip().replace("\n\n", "\n")
 
-            content = i.replace(".", ".\n")
-            content = content.strip()
+                for c in content.split("\n"):
+                    if len(c)>0:
+                        print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(c.strip()).strip()+"\033[0m")
 
-            for c in content.split("\n"):
-                print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(c)+"\033[0m")
+            else:
+                print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(i.strip().replace("\n\n", "\n")).strip()+"\033["+colors[indexc]+"m")
 
-        else:
-            print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(i.strip())+"\033["+colors[indexc]+"m")
-
-        indexc += 1
-        if indexc > 2:
-            indexc = 0
+            indexc += 1
+            if indexc > 2:
+                indexc = 0
 
 
     for i in soup.find_all("a"):
-        print("\033[37m"+baseurl+i.get('href'),"\033[0m")
+        print("\033[37m  "+baseurl+i.get('href'),"\033[0m")
 
-
+    print()
 
 if __name__ == "__main__":
     main()
