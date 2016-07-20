@@ -89,7 +89,6 @@ def main():
     for i in soup.find_all("a"):
         print("\033[37m  "+baseurl+i.get('href'),"\033[0m")
 
-    print()
 
 if __name__ == "__main__":
     main()

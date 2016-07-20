@@ -315,7 +315,7 @@ def main():
                     if score > len(args.search.split(" ")) / 3:
                         quotelen = len(quote)
                         if quotelen < length or length == -1:
-                            print("\033[96m" + fortune_file.replace("./quotes/", "").capitalize() + " (" + str(score) + "):\033[0m\n\033[34m" + quote + "\033[34m" + author, "\033[0m\n")
+                            print("\033[34m" + fortune_file.replace("./quotes/", "").capitalize() + " (" + str(score) + "):\033[0m\n\033[33m" + quote + "\033[91m" + author, "\033[0m\n")
 
         elif args.update:
             make_fortune_data_file(fortune_file)
@@ -346,7 +346,8 @@ def main():
                     quote = quote.replace("'", "")
                     print(author.replace("--", "").strip().replace("'", "\'") + ": " + quote.strip())
                 else:
-                    print("\033[91m" + fortune_title + ":\033[0m\n\033[34m" + quote + "\033[34m" + author, "\033[0m")
+                    #print("\033[34m" + fortune_title + ":\033[0m\n\033[33m" + quote + "\033[91m" + author, "\033[0m")
+                    print("\033[33m" + quote.strip() + "\033[91m\n\n" + author.strip("--").strip(), "\033[0m")
     else:
         print('no file given')
 
