@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # coding=utf-8
 """
 Quote of the day from https://www.goodreads.com/quotes_of_the_day
