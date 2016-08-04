@@ -98,7 +98,8 @@ def main():
 
     quotestring = quotestring.strip()
 
-    print(quotestring)
+    if len(quotestring) > 0:
+        open(arguments.quotefile, "w").write(quotestring)
 
 
 if __name__ == "__main__":
