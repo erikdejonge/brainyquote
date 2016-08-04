@@ -4,10 +4,11 @@
 Quote of the day from https://www.goodreads.com/quotes_of_the_day
 
 Usage:
-  goodreads_qotd.py
+  goodreads_qotd.py [options] <quotefile>
 
 Options:
   -h --help     Show this screen.
+  -u --url      Show origin
 
 author  : rabshakeh (erik@a8.nl)
 project : quotes
@@ -40,16 +41,20 @@ class IArguments(Arguments):
         __init__
         """
         self.help = False
-        self.input = ""
+        self.quotefile = ""
         super().__init__(doc)
 
+def addprint(buf, news):
+    buf += news
+    buf += "\n"
+    return buf
 
 def main():
     """
     main
     """
-    #arguments = IArguments(__doc__)
-    #console(arguments)
+    arguments = IArguments(__doc__)
+    # console(arguments)
     baseurl = "https://www.goodreads.com"
     url = baseurl + "/quotes_of_the_day"
     if os.path.exists("r.txt"):
@@ -67,6 +72,7 @@ def main():
     soup = BeautifulSoup(rtext, 'html.parser')
     colors = ["33", "91", "94"]
     indexc = 0
+    quotestring = ""
     for i in str(soup.getText().strip().replace('    ―', '')).strip().split("\n"):
         if len(i.strip())>0:
             if indexc == 0:
@@ -76,18 +82,23 @@ def main():
 
                 for c in content.split("\n"):
                     if len(c)>0:
-                        print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(c.strip()).strip()+"\033[0m")
+                        quotestring = addprint(quotestring, "\033["+colors[indexc]+"m"+consoleprinter.forceascii(c.strip()).strip()+"\033[0m")
 
             else:
-                print("\033["+colors[indexc]+"m"+consoleprinter.forceascii(i.strip().replace("\n\n", "\n")).strip()+"\033["+colors[indexc]+"m")
+                quotestring = addprint(quotestring, "\033["+colors[indexc]+"m"+consoleprinter.forceascii(i.strip().replace("\n\n", "\n")).strip()+"\033["+colors[indexc]+"m")
 
             indexc += 1
             if indexc > 2:
                 indexc = 0
 
+    if arguments.url:
+        for i in soup.find_all("a"):
+            quotestring = addprint(quotestring, "\033[37m  "+baseurl+i.get('href')+"\033[0m")
 
-    for i in soup.find_all("a"):
-        print("\033[37m  "+baseurl+i.get('href'),"\033[0m")
+
+    quotestring = quotestring.strip()
+
+    print(quotestring)
 
 
 if __name__ == "__main__":
