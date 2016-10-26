@@ -16,14 +16,14 @@ where   : Latitude: 51.825439
           longitude: 4.650873
           https://www.google.nl/maps/place/51.825439,4.650873
 """
-import os
-import sys
-import requests
 import consoleprinter
+import os
+import requests
+import sys
 
 from arguments import Arguments
-from consoleprinter import console
 from bs4 import BeautifulSoup
+from consoleprinter import console
 
 if sys.version_info.major < 3:
     console("Python 3 is required", color="red", plaintext="True")
