@@ -108,7 +108,7 @@ def main():
             quotestring = addprint(quotestring, "\033[37m  " + baseurl + i.get('href') + "\033[0m")
 
     quotestring = quotestring.strip()
-    print(quotestring)
+    #print(quotestring)
     quotestring = quotestring.replace("\n\x1b[33m”", "\x1b[33m”\n")
     if len(quotestring) > 0:
         open(arguments.quotefile, "w").write(quotestring)
