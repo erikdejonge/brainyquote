@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/bin/python3
 # coding=utf-8
 """
 Quote of the day from https://www.goodreads.com/quotes_of_the_day
@@ -8,6 +8,7 @@ Usage:
 Options:
   -h --help     Show this screen.
   -u --url      Show origin
+  -c --cache    Cache content
 
 author  : rabshakeh (erik@a8.nl)
 project : quotes
@@ -40,6 +41,7 @@ class IArguments(Arguments):
         """
         self.help = False
         self.quotefile = ""
+        self.cache = False
         super().__init__(doc)
 
 
@@ -70,8 +72,8 @@ def main():
     else:
         # print("downloading")
         r = requests.get(url)
-
-        open("r.txt", "w").write(r.text)
+        if arguments.cache is True:
+            open("r.txt", "w").write(r.text)
         rtext = r.text
 
     soup = BeautifulSoup(rtext, 'html.parser')
