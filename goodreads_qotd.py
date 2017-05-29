@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # coding=utf-8
 """
 Quote of the day from https://www.goodreads.com/quotes_of_the_day
@@ -65,14 +65,14 @@ def main():
     url = baseurl + "/quotes_of_the_day"
 
 
-    if os.path.exists("r.txt"):
-        rtext = open("r.txt").read()
-    else:
+    #if os.path.exists("r.txt"):
+    #    rtext = open("r.txt").read()
+    #else:
         # print("downloading")
-        r = requests.get(url)
+    r = requests.get(url)
 
-        open("r.txt", "w").write(r.text)
-        rtext = r.text
+    #open("r.txt", "w").write(r.text)
+    rtext = r.text
 
     soup = BeautifulSoup(rtext, 'html.parser')
     allhtml = soup.find_all(class_="quoteText")[0]
@@ -108,7 +108,7 @@ def main():
             quotestring = addprint(quotestring, "\033[37m  " + baseurl + i.get('href') + "\033[0m")
 
     quotestring = quotestring.strip()
-    #print(quotestring)
+    print(quotestring)
     quotestring = quotestring.replace("\n\x1b[33m”", "\x1b[33m”\n")
     if len(quotestring) > 0:
         open(arguments.quotefile, "w").write(quotestring)
