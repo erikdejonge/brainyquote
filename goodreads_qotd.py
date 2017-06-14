@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-
-=======
-#!/usr/local/bin/python3
->>>>>>> e46dac7ab760e6fcdd17c0dfacd3abe2361f2ca2
 # coding=utf-8
 """
 Quote of the day from https://www.goodreads.com/quotes_of_the_day
@@ -69,23 +64,10 @@ def main():
     # console(arguments)
     baseurl = "https://www.goodreads.com"
     url = baseurl + "/quotes_of_the_day"
-
-
-    #if os.path.exists("r.txt"):
-    #    rtext = open("r.txt").read()
-    #else:
-        # print("downloading")
-<<<<<<< HEAD
     r = requests.get(url)
-
-    #open("r.txt", "w").write(r.text)
+    print(r.text)
+    return
     rtext = r.text
-=======
-        r = requests.get(url)
-        if arguments.cache is True:
-            open("r.txt", "w").write(r.text)
-        rtext = r.text
->>>>>>> e46dac7ab760e6fcdd17c0dfacd3abe2361f2ca2
 
     soup = BeautifulSoup(rtext, 'html.parser')
     allhtml = soup.find_all(class_="quoteText")[0]
