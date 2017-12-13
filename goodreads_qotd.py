@@ -96,7 +96,7 @@ def main():
                         quotestring = addprint(quotestring, "\033[" + colors[indexc] + "m" + consoleprinter.remove_escapecodes(c.strip()).strip() + "\033[0m")
             else:
 
-                quotestring = addprint(quotestring, "\033[" + colors[indexc] + "m- " + consoleprinter.remove_escapecodes(i.strip().replace("\n\n", "\n")).strip() + "\033[" + colors[indexc] + "m")
+                quotestring = addprint(quotestring, "\033[" + colors[indexc] + "m\n" + consoleprinter.remove_escapecodes(i.strip().replace("\n\n", "\n")).strip() + "\033[" + colors[indexc] + "m")
 
             indexc += 1
             if indexc > 2:
