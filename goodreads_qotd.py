@@ -63,10 +63,10 @@ def main():
 
     # console(arguments)
     baseurl = "https://www.goodreads.com"
-    url = baseurl + "/quotes_of_the_day"
+    url = baseurl + "/"
     r = requests.get(url)
-    print(r.text)
-    return
+    #print(r.text)
+    #return
     rtext = r.text
 
     soup = BeautifulSoup(rtext, 'html.parser')
@@ -78,11 +78,13 @@ def main():
     colors = ["33", "91", "94"]
     indexc = 0
     quotestring = ""
+    souptext =  str(soup.getText().strip().replace('    ―', '')).strip().split("\n")
 
-    for i in str(soup.getText().strip().replace('    ―', '')).strip().split("\n"):
+    for i in souptext:
+
         if len(i.strip()) > 0:
             if indexc == 0:
-                content = i.replace("\n\n", "\n").replace(".", ".\n")
+                content = i.replace("\n\n", "\n")
                 content = content.strip().replace("\n\n", "\n")
 
                 for c in content.split("\n"):
@@ -90,9 +92,11 @@ def main():
                         for i in range(0, 5):
                             c = c.replace("\n.", ".")
 
+
                         quotestring = addprint(quotestring, "\033[" + colors[indexc] + "m" + consoleprinter.remove_escapecodes(c.strip()).strip() + "\033[0m")
             else:
-                quotestring = addprint(quotestring, "\033[" + colors[indexc] + "m" + consoleprinter.remove_escapecodes(i.strip().replace("\n\n", "\n")).strip() + "\033[" + colors[indexc] + "m")
+
+                quotestring = addprint(quotestring, "\033[" + colors[indexc] + "m- " + consoleprinter.remove_escapecodes(i.strip().replace("\n\n", "\n")).strip() + "\033[" + colors[indexc] + "m")
 
             indexc += 1
             if indexc > 2:
