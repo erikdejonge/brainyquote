@@ -63,7 +63,7 @@ def main():
 
     # console(arguments)
     baseurl = "https://www.goodreads.com"
-    url = baseurl + "/quotes_of_the_day"
+    url = baseurl + "/quotes"
     r = requests.get(url)
     print(r.text)
     return
