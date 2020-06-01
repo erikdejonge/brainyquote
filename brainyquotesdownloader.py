@@ -46,8 +46,8 @@ def fetch_quotes(url):
             if cnt == cnt2:
                 f.write("\t\t--" + author + "\n%\n")
 
-    # f.seek(0)
-    # print(f.read())
+    f.seek(0)
+    print(f.read())
     f.close()
 
 
@@ -59,17 +59,23 @@ def fetch_links(topic):
     url = "http://brainyquote.com" + topic
     page = requests.get(url)
     print(page.url)
-    tree = html.fromstring(page.text)
-    end = tree.xpath('/html/body/div[4]/div/div/div[1]/div[2]/div/ul[2]/li[1]/div/ul/li[last()-1]/a/text()')
 
-    # print end[0],"\n"
+
+    tree = html.fromstring(page.text)
+
+    #open("tree.html", "w").write(html.tostring(tree).decode('ascii'))
+
+
+
+    end = tree.xpath('/html/body/div[7]/div[1]/nav/ul/li[last()-1]/a/text()')
+
     for link in range(1, int(end[0]) + 1):
+
         if link == 1:
             fetch_quotes(url)
         else:
             blink = url.split('.html')
             fetch_quotes(url.replace(url, "%s%s.html" % (blink[0], link)))
-
 
 def get_topics():
     """
@@ -79,7 +85,7 @@ def get_topics():
     tree = html.fromstring(page.text)
     topics = tree.xpath('//div[@class="bqLn"]/div[@class="bqLn"]/a/@href')
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=16) as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=1) as executor:
         executor.map(fetch_links, topics)
 
 
